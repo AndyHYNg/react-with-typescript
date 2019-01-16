@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import './App.css';
 
 interface appState {
-  searchRequest : string,
+  searchBrand : string,
   postalCode : string,
-  chipsList : array
+  chipsList : App[]
 }
 
-class App extends Component<{}, { searchRequest : string, postalCode : string }> {
+class App extends Component<{}, appState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      searchRequest: "potato+chips",
+      searchBrand: "potato+chips",
       postalCode: "",
       chipsList: []
     }
@@ -19,8 +20,8 @@ class App extends Component<{}, { searchRequest : string, postalCode : string }>
 
   // we need to be explicit with e typing in TS
   handleChange = (e: React.ChangeEvent<any>) => {
-    console.log(e.target.name);
-    (e.target.name === "chipBrand") ? this.setState({ searchRequest: e.target.value}) : this.setState({ postalCode: e.target.value});
+    // console.log(e.target.name);
+    (e.target.name === "chipBrand") ? this.setState({ searchBrand: e.target.value}) : this.setState({ postalCode: e.target.value});
   }
 
   // we need to be explicit with e typing in TS
@@ -32,7 +33,17 @@ class App extends Component<{}, { searchRequest : string, postalCode : string }>
 
   getDeals = () => {
     const fixedPostalCode = this.filterPostalCode(this.state.postalCode);
-    console.log(fixedPostalCode);
+    return axios
+      .get(`https://backflipp.wishabi.com/flipp/items/search`, {
+        params: {
+          locale: "en-CA",
+          postal_code: this.state.postalCode,
+          q: this.state.searchBrand
+        }
+      })
+      .then(res => {
+        console.log(res);
+      })
   }
 
   // remove whitespace in postal code
