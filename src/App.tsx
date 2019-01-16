@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+interface appState {
+  searchRequest : string,
+  postalCode : string,
+  chipsList : array
+}
+
+class App extends Component<{}, { searchRequest : string, postalCode : string }> {
   constructor(props: any) {
     super(props);
     this.state = {
       searchRequest: "potato+chips",
       postalCode: "",
-      chipsList: [],
+      chipsList: []
     }
   }
 
-  handleChange = (e: any) => {
-    this.setState({
-      searchRequest: e.target.value
-    })
+  // we need to be explicit with e typing in TS
+  handleChange = (e: React.ChangeEvent<any>) => {
+    console.log(e.target.name);
+    (e.target.name === "chipBrand") ? this.setState({ searchRequest: e.target.value}) : this.setState({ postalCode: e.target.value});
+  }
+
+  // we need to be explicit with e typing in TS
+  // we don't need to technically gain anything from e as handleChange should have set the state with all the necessary information obtained from the form
+  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    this.getDeals();
+  }
+
+  getDeals = () => {
+    const fixedPostalCode = this.filterPostalCode(this.state.postalCode);
+    console.log(fixedPostalCode);
+  }
+
+  // remove whitespace in postal code
+  filterPostalCode = (postalCode: string) => {
+    return postalCode.replace(/\s/g, '');
   }
 
   render() {
@@ -23,28 +45,17 @@ class App extends Component {
       <div className="App">
         <h1>Couch Potato</h1>
         <h2>{`For the couch potatoes looking for cheap potato (chips)`}</h2>
-        <form action="" onChange={this.handleChange}>
+        <form action="" onSubmit={this.handleSubmit} onChange={this.handleChange}>
+          <label htmlFor="postalCode">Enter Postal Code:</label>
+          <input type="text" name="postalCode" className="postalCode" required={true} id="postalCode" placeholder="Postal Code" />
           <select name="chipBrand" id="brand">
             <option value="potato+chips" defaultValue="true">All</option>
             <option value="ruffles">Ruffles</option>
             <option value="miss+vickie">Miss Vickie's</option>
             <option value="lays">Lay's</option>
           </select>
+          <input type="submit" className="submit"/>
         </form>
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header> */}
       </div>
     );
   }
