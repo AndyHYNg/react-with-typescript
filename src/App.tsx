@@ -21,7 +21,7 @@ class App extends Component<{}, appState> {
   // we need to be explicit with e typing in TS
   handleChange = (e: React.ChangeEvent<any>) => {
     // console.log(e.target.name);
-    (e.target.name === "chipBrand") ? this.setState({ searchBrand: e.target.value}) : this.setState({ postalCode: e.target.value});
+    (e.target.name === "chipBrand") ? this.setState({ searchBrand: e.target.value }) : this.setState({ postalCode: e.target.value });
   }
 
   // we need to be explicit with e typing in TS
@@ -41,8 +41,11 @@ class App extends Component<{}, appState> {
           q: this.state.searchBrand
         }
       })
-      .then(res => {
+      .then((res: any) => {
         console.log(res);
+        (res.data.items).forEach((item: object | null) => {
+          console.log(item);
+        })
       })
   }
 
