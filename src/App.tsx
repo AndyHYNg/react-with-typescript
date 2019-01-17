@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import axios from "axios";
 import './App.css';
 
+import Form from "./components/Form";
+
 interface appState {
   searchBrand : string,
   postalCode : string,
-  chipsList : App[]
+  chipsList : object[]
 }
 
 class App extends Component<{}, appState> {
@@ -42,11 +44,15 @@ class App extends Component<{}, appState> {
         }
       })
       .then((res: any) => {
-        console.log(res);
-        (res.data.items).forEach((item: object | null) => {
-          console.log(item);
-        })
+        (res.data.items).forEach(this.pushData);
       })
+  }
+
+  pushData = (element: object | {}) => {
+    let newChipsList = this.state.chipsList.concat(element);
+    this.setState({
+      chipsList: newChipsList
+    })
   }
 
   // remove whitespace in postal code
@@ -56,21 +62,7 @@ class App extends Component<{}, appState> {
 
   render() {
     return (
-      <div className="App">
-        <h1>Couch Potato</h1>
-        <h2>{`For the couch potatoes looking for cheap potato (chips)`}</h2>
-        <form action="" onSubmit={this.handleSubmit} onChange={this.handleChange}>
-          <label htmlFor="postalCode">Enter Postal Code:</label>
-          <input type="text" name="postalCode" className="postalCode" required={true} id="postalCode" placeholder="Postal Code" />
-          <select name="chipBrand" id="brand">
-            <option value="potato+chips" defaultValue="true">All</option>
-            <option value="ruffles">Ruffles</option>
-            <option value="miss+vickie">Miss Vickie's</option>
-            <option value="lays">Lay's</option>
-          </select>
-          <input type="submit" className="submit"/>
-        </form>
-      </div>
+      <Form handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
     );
   }
 }
