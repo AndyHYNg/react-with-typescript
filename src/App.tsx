@@ -30,7 +30,9 @@ class App extends Component<{}, appState> {
   // we don't need to technically gain anything from e as handleChange should have set the state with all the necessary information obtained from the form
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    this.getDeals();
+    this.setState({
+      chipsList : []
+    }, this.getDeals)
   }
 
   getDeals = () => {
