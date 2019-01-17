@@ -7,6 +7,7 @@ import Form from "./components/Form";
 interface appState {
   searchBrand : string,
   postalCode : string,
+  fixedPostalCode : string,
   chipsList : object[]
 }
 
@@ -16,6 +17,7 @@ class App extends Component<{}, appState> {
     this.state = {
       searchBrand: "potato+chips",
       postalCode: "",
+      fixedPostalCode: "",
       chipsList: []
     }
   }
@@ -30,18 +32,19 @@ class App extends Component<{}, appState> {
   // we don't need to technically gain anything from e as handleChange should have set the state with all the necessary information obtained from the form
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fixedPostalCode = this.filterPostalCode(this.state.postalCode);
     this.setState({
+      fixedPostalCode,
       chipsList : []
     }, this.getDeals)
   }
 
   getDeals = () => {
-    const fixedPostalCode = this.filterPostalCode(this.state.postalCode);
     return axios
       .get(`https://backflipp.wishabi.com/flipp/items/search`, {
         params: {
           locale: "en-CA",
-          postal_code: this.state.postalCode,
+          postal_code: this.state.fixedPostalCode,
           q: this.state.searchBrand
         }
       })
