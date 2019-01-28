@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from "axios";
 import './App.css';
 
+import ChipProduct from "./components/ChipProduct";
+
 import Form from "./components/Form";
 
 interface appState {
@@ -11,7 +13,7 @@ interface appState {
   chipsList : object[]
 }
 
-class App extends Component<{}, appState> {
+class App extends Component <{}, appState> {
   constructor(props: any) {
     super(props);
     this.state = {
