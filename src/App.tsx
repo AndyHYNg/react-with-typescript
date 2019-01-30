@@ -2,25 +2,42 @@ import React, { Component } from 'react';
 import axios from "axios";
 import './App.css';
 
-import ChipProduct from "./components/ChipProduct";
+// import ChipProduct from "./components/ChipProduct";
 
 import Form from "./components/Form";
 
-interface appState {
+// clipping_image_url
+// current_price
+// merchant_name
+// name
+// valid_from
+// valid_to
+
+// interface ChipProduct {
+//   clipImage: string,
+//   price: number,
+//   merchantName: string,
+//   itemName: string,
+//   validFrom: string,
+//   validUntil: string
+// }
+
+type AppState = {
   searchBrand : string,
   postalCode : string,
   fixedPostalCode : string,
-  chipsList : object[]
+  chipsArray : object[]
+  // chipsArray : ChipProduct[]
 }
 
-class App extends Component <{}, appState> {
+class App extends Component <{}, AppState> {
   constructor(props: any) {
     super(props);
     this.state = {
       searchBrand: "potato+chips",
       postalCode: "",
       fixedPostalCode: "",
-      chipsList: []
+      chipsArray: []
     }
   }
 
@@ -37,7 +54,7 @@ class App extends Component <{}, appState> {
     const fixedPostalCode = this.filterPostalCode(this.state.postalCode);
     this.setState({
       fixedPostalCode,
-      chipsList : []
+      chipsArray : []
     }, this.getDeals)
   }
 
@@ -56,9 +73,9 @@ class App extends Component <{}, appState> {
   }
 
   pushData = (element: object | {}) => {
-    let newChipsList = this.state.chipsList.concat(element);
+    let newChipsList = this.state.chipsArray.concat(element);
     this.setState({
-      chipsList: newChipsList
+      chipsArray: newChipsList
     })
   }
 
