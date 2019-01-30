@@ -2,32 +2,24 @@ import React, { Component } from 'react';
 import axios from "axios";
 import './App.css';
 
-// import ChipProduct from "./components/ChipProduct";
-
 import Form from "./components/Form";
 
-// clipping_image_url
-// current_price
-// merchant_name
-// name
-// valid_from
-// valid_to
+// object interface to store necessary data obtained from API
+interface ChipProduct {
+  clipImage: string,
+  price: number,
+  merchantName: string,
+  itemName: string,
+  validFrom: string,
+  validUntil: string
+}
 
-// interface ChipProduct {
-//   clipImage: string,
-//   price: number,
-//   merchantName: string,
-//   itemName: string,
-//   validFrom: string,
-//   validUntil: string
-// }
-
+// type instead of interface for better constraints (for React Props and States)
 type AppState = {
   searchBrand : string,
   postalCode : string,
   fixedPostalCode : string,
-  chipsArray : object[]
-  // chipsArray : ChipProduct[]
+  chipsArray : ChipProduct[]
 }
 
 class App extends Component <{}, AppState> {
@@ -67,12 +59,22 @@ class App extends Component <{}, AppState> {
           q: this.state.searchBrand
         }
       })
-      .then((res: any) => {
-        (res.data.items).forEach(this.pushData);
+      .then((res: any) => 
+        res.data.items.map((item: any) => ({
+          clipImage : item.clipping_image_url,
+          price : item.current_price,
+          merchantName : item.merchant_name,
+          itemName : item.name,
+          validFrom : item.valid_from,
+          validUntil : item.valid_to
+        }))
+      )
+      .then((items: ChipProduct) => {
+        this.pushData(items)
       })
   }
 
-  pushData = (element: object | {}) => {
+  pushData = (element: ChipProduct) => {
     let newChipsList = this.state.chipsArray.concat(element);
     this.setState({
       chipsArray: newChipsList
