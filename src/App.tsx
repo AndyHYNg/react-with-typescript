@@ -3,6 +3,7 @@ import axios from "axios";
 import './App.css';
 
 import Form from "./components/Form";
+import PromoTable from "./components/PromoTable";
 
 // object interface to store necessary data obtained from API
 interface ChipProduct {
@@ -89,6 +90,7 @@ class App extends Component <{}, AppState> {
   render() {
     return (
       <Form handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+      // <PromoTable chipsArray={this.state.chipsArray} />
     );
   }
 }
