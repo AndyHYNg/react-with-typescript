@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from "axios";
 import './App.css';
 
@@ -93,8 +93,10 @@ class App extends Component <{}, AppState> {
 
   render() {
     return (
-      <Form handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
-      // <PromoTable chipsArray={this.state.chipsArray} />
+      <Fragment>
+        <Form handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+        <PromoTable chipsArray={this.state.chipsArray} />
+      </Fragment>
     );
   }
 }
