@@ -7,9 +7,11 @@ import PromoTable from "./components/PromoTable";
 
 // object interface to store necessary data obtained from API
 interface ChipProduct {
+  // itemObject: object,
   clipImage: string,
   price: number,
   merchantName: string,
+  merchantLogo: string,
   itemName: string,
   validFrom: string,
   validUntil: string
@@ -62,9 +64,11 @@ class App extends Component <{}, AppState> {
       })
       .then((res: any) => 
         res.data.items.map((item: any) => ({
+          // itemObject : item,
           clipImage : item.clipping_image_url,
           price : item.current_price,
           merchantName : item.merchant_name,
+          merchantLogo : item.merchant_logo,
           itemName : item.name,
           validFrom : item.valid_from,
           validUntil : item.valid_to
