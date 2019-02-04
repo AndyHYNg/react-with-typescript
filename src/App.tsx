@@ -1,24 +1,38 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from "axios";
 import './App.css';
 
 import Form from "./components/Form";
+import PromoTable from "./components/PromoTable";
 
-interface appState {
+// object interface to store necessary data obtained from API
+interface ChipProduct {
+  // itemObject: object,
+  clipImage: string,
+  price: number,
+  merchantName: string,
+  merchantLogo: string,
+  itemName: string,
+  validFrom: string,
+  validUntil: string
+}
+
+// type instead of interface for better constraints (for React Props and States)
+type AppState = {
   searchBrand : string,
   postalCode : string,
   fixedPostalCode : string,
-  chipsList : object[]
+  chipsArray : ChipProduct[]
 }
 
-class App extends Component<{}, appState> {
+class App extends Component <{}, AppState> {
   constructor(props: any) {
     super(props);
     this.state = {
       searchBrand: "potato+chips",
       postalCode: "",
       fixedPostalCode: "",
-      chipsList: []
+      chipsArray: []
     }
   }
 
@@ -35,7 +49,7 @@ class App extends Component<{}, appState> {
     const fixedPostalCode = this.filterPostalCode(this.state.postalCode);
     this.setState({
       fixedPostalCode,
-      chipsList : []
+      chipsArray : []
     }, this.getDeals)
   }
 
@@ -48,15 +62,27 @@ class App extends Component<{}, appState> {
           q: this.state.searchBrand
         }
       })
-      .then((res: any) => {
-        (res.data.items).forEach(this.pushData);
+      .then((res: any) => 
+        res.data.items.map((item: any) => ({
+          // itemObject : item,
+          clipImage : item.clipping_image_url,
+          price : item.current_price,
+          merchantName : item.merchant_name,
+          merchantLogo : item.merchant_logo,
+          itemName : item.name,
+          validFrom : item.valid_from,
+          validUntil : item.valid_to
+        }))
+      )
+      .then((items: ChipProduct) => {
+        this.pushData(items)
       })
   }
 
-  pushData = (element: object | {}) => {
-    let newChipsList = this.state.chipsList.concat(element);
+  pushData = (element: ChipProduct) => {
+    let newChipsList = this.state.chipsArray.concat(element);
     this.setState({
-      chipsList: newChipsList
+      chipsArray: newChipsList
     })
   }
 
@@ -66,9 +92,10 @@ class App extends Component<{}, appState> {
   }
 
   render() {
-    return (
-      <Form handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
-    );
+    return <Fragment>
+        <Form handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
+        <PromoTable chipsArray={this.state.chipsArray} />
+      </Fragment>;
   }
 }
 
