@@ -92,12 +92,10 @@ class App extends Component <{}, AppState> {
   }
 
   render() {
-    return (
-      <Fragment>
+    return <Fragment>
         <Form handleSubmit={this.handleSubmit} handleChange={this.handleChange} />
         <PromoTable chipsArray={this.state.chipsArray} />
-      </Fragment>
-    );
+      </Fragment>;
   }
 }
 

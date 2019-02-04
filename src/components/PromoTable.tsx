@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 const PromoTable = (props: any) => (
-  props.ChipsArray.map((item: any) => (
+  props.chipsArray.map((item: any) => (
     <Fragment>
         {/* render results in a table markup */}
         <div>
