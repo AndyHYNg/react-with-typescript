@@ -5,10 +5,10 @@ const PromoTable = (props: any) => (
     <Fragment>
         {/* render results in a table markup */}
         <div>
-            <img src={item.clipImage} alt="" />
-            <p>{item.price}</p>
-            <p>{item.merchantName}</p>
             <img src={item.merchantLogo} alt=""/>
+            <p>{item.merchantName}</p>
+            <img src={item.clipImage} alt="" />
+            {/* <p>{item.price}</p> */}
             <p>{item.itemName}</p>
             <p>{item.validFrom}</p>
             <p>{item.validUntil}</p>
